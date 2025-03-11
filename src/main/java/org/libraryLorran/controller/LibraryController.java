@@ -88,7 +88,7 @@ public class LibraryController {
         System.out.println("Digite o livro desejado");
         String title = askTitleBook();
         Optional<Member> member = libraryService.findMemberbyId(id);
-        if (loanService.verifyExistMember(member) && loanService.verifyExistBook(book))
+//        if (loanService.verifyExistMember(member) && loanService.verifyExistBook(book))
     }
 
     private void listBook() {
