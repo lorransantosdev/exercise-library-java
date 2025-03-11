@@ -22,10 +22,15 @@ public class LibraryService {
     }
 
     public void registerMember(Member member) {
-        members.add(member);
+        if (members.contains(member)) {
+            System.out.println("Este usuário já foi registrado");
+        } else {
+            members.add(member);
+            System.out.println();
+        }
     }
 
-    public Optional<Member> findMemberbyId(String memberId) {
+    public Optional<Member> findMemberbyId(int memberId) {
         return members.stream()
                 .filter(member -> members.contains(member.getMemberId()))
                 .findFirst();
@@ -34,5 +39,6 @@ public class LibraryService {
     public List<Book> findListAvaliableBooks() {
         return books;
     }
+
 
 }
