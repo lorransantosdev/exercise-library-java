@@ -32,11 +32,17 @@ public class LibraryService {
 
     public Optional<Member> findMemberbyId(int memberId) {
         return members.stream()
-                .filter(member -> members.contains(member.getMemberId()))
+                .filter(member -> members.contains(memberId))
                 .findFirst();
     }
 
-    public List<Book> findListAvaliableBooks() {
+    public Optional<Book> findBooks(String title) {
+        return books.stream()
+                .filter(book -> books.contains(title))
+                .findFirst();
+    }
+
+    public List<Book> listAvaliable() {
         return books;
     }
 

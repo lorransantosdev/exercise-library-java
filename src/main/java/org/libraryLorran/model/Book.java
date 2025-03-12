@@ -8,10 +8,10 @@ public class Book {
 
     public Book() { }
 
-    public Book(String title, String author, int ISBN) {
+    public Book(String title, String author, int isbn) {
         this.title = title;
         this.author = author;
-        this.isbn = ISBN;
+        this.isbn = isbn;
     }
 
     public String getTitle() { return title; }

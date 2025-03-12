@@ -1,7 +1,6 @@
 package org.libraryLorran.controller;
 
 import org.libraryLorran.model.Book;
-import org.libraryLorran.model.Loan;
 import org.libraryLorran.model.Member;
 import org.libraryLorran.services.LibraryService;
 import org.libraryLorran.services.LoanService;
@@ -20,10 +19,6 @@ public class LibraryController {
         this.scanner = new Scanner(System.in);
     }
 
-    public String askTitleBook() {
-        return scanner.nextLine();
-    }
-
     public void start() {
         boolean runningSystem = true;
         while (runningSystem) {
@@ -33,13 +28,15 @@ public class LibraryController {
                 case 1 -> addBook();
                 case 2 -> removeBook();
                 case 3 -> registerUser();
-                case 4 ->
+                case 4 -> registerLoan();
+                case 5 -> returnLoan();
+                case 6 -> listBookAvaliables();
                 case 7 -> runningSystem = false;
             }
         }
     }
 
-    public void showMenu() {
+    private void showMenu() {
         System.out.println("\n=== Sistema Biblioteca ===");
         System.out.println("1. Adicionar Livro");
         System.out.println("2. Remover Livro");
@@ -51,47 +48,71 @@ public class LibraryController {
         System.out.print("Escolha uma opção: ");
     }
 
-    public void addBook() {
+    private void addBook() {
         System.out.println("Digite o title do livro");
-        String title = askTitleBook();
+        String title = scanner.next();
         System.out.println("Digite o autor do livro");
-        String author = scanner.nextLine();
+        String author = scanner.next();
         System.out.println("Digite o ISBN do livro");
         int isbn = scanner.nextInt();
         libraryService.addBook(new Book(title, author, isbn));
     }
 
-    public void removeBook() {
+    private void removeBook() {
         System.out.println("Insira o titulo do livro para remove-lo");
-        String title = askTitleBook();
+        String title = scanner.next();
         if (libraryService.removeBook(title)) {
             System.out.println("Livro: " + title + " removido com sucesso");
         } else {
             System.out.println("Há alguma formação errada, confira a lista de livros.");
-            libraryService.findListAvaliableBooks();
+            listBookAvaliables();
         }
     }
 
-    public void registerUser() {
+    private void registerUser() {
         System.out.println("Digite o id de usuario");
         int id = scanner.nextInt();
         System.out.println("Digite o nome do usuario");
-        String name = scanner.nextLine();
+        String name = scanner.next();
         System.out.println("Digite o email do usuario");
-        String email = scanner.nextLine();
+        String email = scanner.next();
         libraryService.registerMember(new Member(id, name, email));
     }
 
-    public void registerLoan() {
+    private void registerLoan() {
         System.out.println("Digite o id de usuario");
         int id = scanner.nextInt();
         System.out.println("Digite o livro desejado");
-        String title = askTitleBook();
+        String title = scanner.next();
         Optional<Member> member = libraryService.findMemberbyId(id);
-//        if (loanService.verifyExistMember(member) && loanService.verifyExistBook(book))
+        Optional<Book> book = libraryService.findBooks(title);
+
+        if (member.isPresent() && book.isPresent()) {
+            loanService.loanBook(member.get(), book.get());
+            System.out.println("Emprestimo realizado com sucesso");
+        } else {
+            System.out.println("Membro ou livro nao encontrado");
+        }
     }
 
-    private void listBook() {
+    private void returnLoan() {
+        System.out.println("Digite o id de usuario");
+        int id = scanner.nextInt();
+        System.out.println("Digite o livro desejado");
+        String title = scanner.next();
+        Optional<Member> member = libraryService.findMemberbyId(id);
+        Optional<Book> book = libraryService.findBooks(title);
+
+        if (member.isPresent() && book.isPresent()) {
+            loanService.loanBook(member.get(), book.get());
+            System.out.println("Emprestimo realizado com sucesso");
+        } else {
+            System.out.println("Membro ou livro nao encontrado");
+        }
+    }
+
+    private void listBookAvaliables() {
         System.out.println();
+        libraryService.listAvaliable().forEach(System.out::println);
     }
 }

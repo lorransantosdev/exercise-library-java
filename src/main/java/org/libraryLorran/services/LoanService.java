@@ -6,6 +6,7 @@ import org.libraryLorran.model.Member;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class LoanService {
     List<Loan> loans = new ArrayList<>();
@@ -15,25 +16,9 @@ public class LoanService {
         System.out.println("Empréstimo realizado com sucesso.");
     }
 
-    public boolean returnBook(Member member, Book book) {
-        if (verifyExistMember(member) && verifyExistBook(book)) {
-            loans.removeIf(loan -> loan.getMember().equals(member) && loan.getBook().equals(book));
-            return true;
-        }
-        return false;
+    public void returnBook(Member member, Book book) {
+        loans.removeIf(loan -> loan.getMember().equals(member) && loan.getBook().equals(book));
+        System.out.println("Livro devolvido com sucesso");
     }
 
-    public boolean verifyExistMember(Member member) {
-        if (!member.getName().isBlank() && member.getName().contains(member.getName())) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean verifyExistBook(Book book) {
-        if (!book.getTitle().isBlank() && book.getTitle().contains(book.getTitle())) {
-            return true;
-        }
-        return false;
-    }
 }
