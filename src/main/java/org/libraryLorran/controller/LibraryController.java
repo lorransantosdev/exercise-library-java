@@ -85,13 +85,13 @@ public class LibraryController {
         System.out.println("Digite o livro desejado");
         String title = scanner.next();
         Optional<Member> member = libraryService.findMemberbyId(id);
-        Optional<Book> book = libraryService.findBooks(title);
+        Optional<Book> book = libraryService.findBookByTitle(title);
 
         if (member.isPresent() && book.isPresent()) {
             loanService.loanBook(member.get(), book.get());
-            System.out.println("Emprestimo realizado com sucesso");
+            System.out.println("Empréstimo realizado com sucesso");
         } else {
-            System.out.println("Membro ou livro nao encontrado");
+            System.out.println("Membro ou livro não encontrado");
         }
     }
 
@@ -101,13 +101,13 @@ public class LibraryController {
         System.out.println("Digite o livro desejado");
         String title = scanner.next();
         Optional<Member> member = libraryService.findMemberbyId(id);
-        Optional<Book> book = libraryService.findBooks(title);
+        Optional<Book> book = libraryService.findBookByTitle(title);
 
         if (member.isPresent() && book.isPresent()) {
-            loanService.loanBook(member.get(), book.get());
-            System.out.println("Emprestimo realizado com sucesso");
+            loanService.returnBook(member.get(), book.get());
+            System.out.println("Livro devolvido com sucesso");
         } else {
-            System.out.println("Membro ou livro nao encontrado");
+            System.out.println("Membro ou livro não encontrado");
         }
     }
 
